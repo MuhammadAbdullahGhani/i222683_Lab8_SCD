@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../Server"); // Import your Express app
+const { app, scheduledTask } = require("../Server"); // Import Express app and cron job
 
 describe("Event Planner API", () => {
   let server;
@@ -9,7 +9,8 @@ describe("Event Planner API", () => {
   });
 
   afterAll(() => {
-    server.close();
+    if (server) server.close(); // Stop Express server
+    if (scheduledTask) scheduledTask.stop(); // Stop cron job
   });
 
   test("User Registration", async () => {
