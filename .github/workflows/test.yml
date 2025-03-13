@@ -21,4 +21,4 @@ jobs:
         run: chmod +x node_modules/.bin/jest
 
       - name: Run tests
-        run: npm test
+        run: npx jest
