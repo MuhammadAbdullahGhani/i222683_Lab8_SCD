@@ -1,15 +1,13 @@
 const request = require("supertest");
-const app = require("../Server"); // Import app
+const app = require("../Server"); // Import your Express app
 
 describe("Event Planner API", () => {
   let server;
 
-  // Start a test server before running tests
   beforeAll(() => {
-    server = app.listen(); // Start a test instance
+    server = app.listen();
   });
 
-  // Close the server after tests
   afterAll(() => {
     server.close();
   });
