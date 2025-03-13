@@ -1,9 +1,21 @@
 const request = require("supertest");
-const app = require("../Server"); 
+const app = require("../Server"); // Import app
 
 describe("Event Planner API", () => {
+  let server;
+
+  // Start a test server before running tests
+  beforeAll(() => {
+    server = app.listen(); // Start a test instance
+  });
+
+  // Close the server after tests
+  afterAll(() => {
+    server.close();
+  });
+
   test("User Registration", async () => {
-    const res = await request(app).post("/api/auth/register").send({
+    const res = await request(server).post("/api/auth/register").send({
       username: "abdullah",
       email: "abd@example.com",
       password: "123456",
@@ -12,7 +24,7 @@ describe("Event Planner API", () => {
   });
 
   test("User Login", async () => {
-    const res = await request(app).post("/api/auth/login").send({
+    const res = await request(server).post("/api/auth/login").send({
       email: "abd@example.com",
       password: "123456",
     });
@@ -21,14 +33,14 @@ describe("Event Planner API", () => {
   });
 
   test("Create Event", async () => {
-    const login = await request(app).post("/api/auth/login").send({
+    const login = await request(server).post("/api/auth/login").send({
       email: "abd@example.com",
       password: "123456",
     });
 
     const token = login.body.token;
 
-    const res = await request(app)
+    const res = await request(server)
       .post("/api/events")
       .set("Authorization", `Bearer ${token}`)
       .send({
@@ -44,14 +56,14 @@ describe("Event Planner API", () => {
   });
 
   test("Fetch Events", async () => {
-    const login = await request(app).post("/api/auth/login").send({
+    const login = await request(server).post("/api/auth/login").send({
       email: "abd@example.com",
       password: "123456",
     });
 
     const token = login.body.token;
 
-    const res = await request(app)
+    const res = await request(server)
       .get("/api/events")
       .set("Authorization", `Bearer ${token}`);
 
